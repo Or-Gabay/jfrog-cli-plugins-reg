@@ -1,13 +1,13 @@
 # Update commit status in GitHub
 updateCommitStatus: &UPDATE_COMMIT_STATUS
   onStart:
-    - update_commit_status jfrog_cli_plugins_reg_git2 --context "$step_name"
+    - update_commit_status jfrog_cli_plugins_reg_git4 --context "$step_name"
   onComplete:
-    - update_commit_status jfrog_cli_plugins_reg_git2 --context "$step_name"
+    - update_commit_status jfrog_cli_plugins_reg_git4 --context "$step_name"
 
 commonConfiguration: &COMMON_CONFIGURATION
   inputResources:
-    - name: jfrog_cli_plugins_reg_git2
+    - name: jfrog_cli_plugins_reg_git4
 
 resources:
   - name: buildJfrogCliPluginGit2
@@ -23,7 +23,7 @@ resources:
         include: master
       files:
         include: ^plugins\/.+
-  - name: jfrog_cli_plugins_reg_git2
+  - name: jfrog_cli_plugins_reg_git4
     type: GitRepo
     configuration:
       path: jfrog/jfrog-cli-plugins-reg
@@ -99,7 +99,7 @@ pipelines:
         execution:
           <<: *UPDATE_COMMIT_STATUS
           onExecute:
-            - cd $res_jfrog_cli_plugins_reg_git2_resourcePath/pipelinesScripts/validator
+            - cd $res_jfrog_cli_plugins_reg_git4_resourcePath/pipelinesScripts/validator
             - env -i PATH=$PATH HOME=$HOME PWD=$PWD JAVA_HOME=$JAVA_HOME GRADLE_HOME=$GRADLE_HOME MAVEN_HOME=$MAVEN_HOME go run validator.go extension
       # Validate plugin descriptor yml
       - name: Plugin_descriptor_structure_is_valid
@@ -111,7 +111,7 @@ pipelines:
         execution:
           <<: *UPDATE_COMMIT_STATUS
           onExecute:
-            - cd $res_jfrog_cli_plugins_reg_git2_resourcePath/pipelinesScripts/validator
+            - cd $res_jfrog_cli_plugins_reg_git4_resourcePath/pipelinesScripts/validator
             - env -i PATH=$PATH HOME=$HOME PWD=$PWD JAVA_HOME=$JAVA_HOME GRADLE_HOME=$GRADLE_HOME MAVEN_HOME=$MAVEN_HOME go run validator.go structure
       # Run `go vet ./...` and `go test ./...`
       - name: Plugin_tests_passed
@@ -123,5 +123,5 @@ pipelines:
         execution:
           <<: *UPDATE_COMMIT_STATUS
           onExecute:
-            - cd $res_jfrog_cli_plugins_reg_git2_resourcePath/pipelinesScripts/validator
+            - cd $res_jfrog_cli_plugins_reg_git4_resourcePath/pipelinesScripts/validator
             - env -i PATH=$PATH HOME=$HOME PWD=$PWD JAVA_HOME=$JAVA_HOME GRADLE_HOME=$GRADLE_HOME MAVEN_HOME=$MAVEN_HOME go run validator.go tests
