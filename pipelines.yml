@@ -13,7 +13,7 @@ resources:
   - name: buildJfrogCliPluginGit2
     type: GitRepo
     configuration:
-      path: jfrog/jfrog-cli-plugins-reg
+      path: Or-Gabay/jfrog-cli-plugins-reg
       gitProvider: or_cli_github
       buildOn:
         # Manually trigger only
@@ -26,7 +26,7 @@ resources:
   - name: jfrog_cli_plugins_reg_git4
     type: GitRepo
     configuration:
-      path: jfrog/jfrog-cli-plugins-reg
+      path: Or-Gabay/jfrog-cli-plugins-reg
       gitProvider: or_cli_github
       buildOn:
         commit: false
