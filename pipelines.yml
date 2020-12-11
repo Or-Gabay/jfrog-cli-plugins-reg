@@ -37,7 +37,7 @@ resources:
         include: ^plugins\/.+
 
 pipelines:
-  - name: build_jfrog_cli_plugin
+  - name: or_build_jfrog_cli_plugin
     steps:
       - name: BuildAndPush
         type: Bash
