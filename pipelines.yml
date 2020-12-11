@@ -82,7 +82,7 @@ pipelines:
           onComplete:
             - update_commit_status buildJfrogCliPluginGit2 --context "$step_name"
 
-  - name: plugin_validation
+  - name: or_plugin_validation
     configuration:
       runtime:
         type: image
