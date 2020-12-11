@@ -1,0 +1,7 @@
+# mandatory:
+pluginName: build-deps-info
+version: v1.2.0
+repository: https://github.com/jfrog/jfrog-cli-plugins
+maintainers:
+  - Or-Gabay
+relativePath: build-deps-info
