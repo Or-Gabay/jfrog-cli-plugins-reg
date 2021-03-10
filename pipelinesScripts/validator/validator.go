@@ -120,7 +120,7 @@ func runTests() (err error) {
 }
 
 func upgradeJfrogPlugins() error {
-	cliPluginPath, token, err := getUpgradeArgs()
+	cliPluginPath, _, err := getUpgradeArgs()
 	if err != nil {
 		return err
 	}
@@ -133,13 +133,13 @@ func upgradeJfrogPlugins() error {
 		return err
 	}
 	fmt.Println("Starting to upgrade JFrog plugins...")
-	failedPlugins, err := doUpgrade(descriptors, depToUpgrade, cliPluginPath)
+	_, err = doUpgrade(descriptors, depToUpgrade, cliPluginPath)
 	if err != nil {
 		return err
 	}
-	if len(failedPlugins) > 0 {
-		openIssue(failedPlugins, depToUpgrade, token)
-	}
+	// if len(failedPlugins) > 0 {
+	// 	openIssue(failedPlugins, depToUpgrade, token)
+	// }
 	return nil
 }
 
