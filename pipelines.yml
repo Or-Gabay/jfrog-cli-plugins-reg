@@ -45,54 +45,7 @@ resources:
         include: master
 
 pipelines:
-  - name: or_build_jfrog_cli_plugin
-    steps:
-      - name: BuildAndPush
-        type: Bash
-        configuration:
-          integrations:
-            - name: releases_jfrog
-          inputResources:
-            - name: buildJfrogCliPluginGit2
-          runtime:
-            type: image
-            image:
-              auto:
-                language: go
-                versions:
-                  - "1.14.4"
-          environmentVariables:
-            JFROG_CLI_PLUGIN_DESCRIPTOR_FILE_NAME: "file-name-with-extension.yml"
-        execution:
-          onStart:
-            - update_commit_status buildJfrogCliPluginGit2 --context "$step_name"
-          onExecute:
-           # Install yq to parse yaml.
-            - GO111MODULE=on go get github.com/mikefarah/yq/v3
-            # Extract params from yaml.
-            - ymlPath="$res_buildJfrogCliPluginGit_resourcePath/plugins/$JFROG_CLI_PLUGIN_DESCRIPTOR_FILE_NAME"
-            - echo "extracting details from $ymlPath"
-            - JFROG_CLI_PLUGIN_PLUGIN_NAME=$(yq r $ymlPath "pluginName") && echo $JFROG_CLI_PLUGIN_PLUGIN_NAME
-            - JFROG_CLI_PLUGIN_VERSION=$(yq r $ymlPath "version") && echo $JFROG_CLI_PLUGIN_VERSION
-            - pluginRepoFullUrl=$(yq r $ymlPath "repository") && echo $pluginRepoFullUrl
-            - pluginRepoName=$(basename $pluginRepoFullUrl .git) && echo $pluginRepoName
-            - pluginRelativePath=$(yq r $ymlPath "relativePath") && echo $pluginRelativePath
-            # Clone plugin repo.
-            - git clone $pluginRepoFullUrl
-            # Copy the plugin release script from registry repo to plugin repo.
-            - cp "$res_buildJfrogCliPluginGit_resourcePath/pipelinesScripts/pluginRelease.sh" "./$pluginRepoName/$pluginRelativePath"
-            - cd "./$pluginRepoName/$pluginRelativePath"
-            # Run plugin release script with the required env variables.
-            - env -i PATH=$PATH HOME=$HOME PWD=$PWD CI="true" \
-              JFROG_CLI_PLUGINS_REGISTRY_URL="https://releases.jfrog.io/artifactory" \
-              JFROG_CLI_PLUGINS_RT_REGISTRY_REPO="jfrog-cli-plugins" \
-              JFROG_CLI_PLUGIN_PLUGIN_NAME=$JFROG_CLI_PLUGIN_PLUGIN_NAME \
-              JFROG_CLI_PLUGIN_VERSION=$JFROG_CLI_PLUGIN_VERSION \
-              bash "./pluginRelease.sh"
-          onComplete:
-            - update_commit_status buildJfrogCliPluginGit2 --context "$step_name"
-
-  - name: or_plugin_release
+  - name: or_plugin_release_new
     configuration:
       runtime:
         type: image
