@@ -109,7 +109,6 @@ pipelines:
           integrations:
             - name: ILAutomation2
             - name: JFrogCLIPluginsRegBot
-            - name: or_token
         execution:
           onExecute:
             - git clone https://github.com/jfrog/jfrog-cli-plugins.git && jfrogCliPluginsPath=`pwd`/jfrog-cli-plugins
