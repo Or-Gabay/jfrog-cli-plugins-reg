@@ -70,7 +70,7 @@ pipelines:
             - env -i PATH=$PATH issue_token=$int_JFrogCLIPluginsRegBot_token HOME=$HOME PWD=$PWD JAVA_HOME=$JAVA_HOME GRADLE_HOME=$GRADLE_HOME MAVEN_HOME=$MAVEN_HOME go run validator.go upgradejfrogplugins $jfrogCliPluginsPath
             - cd $jfrogCliPluginsPath
             # Override origin.
-            - git remote set-url origin https://$int_or_token_token@github.com/jfrog/jfrog-cli-plugins.git && git fetch origin main && git checkout main
+            - git remote set-url origin https://df6102abada5ca4cb312760722773359b965599b@github.com/jfrog/jfrog-cli-plugins.git && git fetch origin main && git checkout main
             # Check if new commits were added.
             - "[[ $(git log origin/main...main --oneline | wc -l) -eq 0 ]]"
             # Check if staged files contains none .mod or .sum files.
@@ -78,7 +78,7 @@ pipelines:
             # Check total number of staged files is not greater than  twice the number of directories (plugins).
             - "[[ $(git diff --name-only --staged | wc -l) -lt $(($(ls -l | grep ^d | wc -l)*2+1)) ]]"
             # Commit and push
-            #- git config user.email "eco-system+1@jfrog.com"
-            #- git config user.name "JFrog-CLI-Plugins-bot"
+            - git config user.email "eco-system+1@jfrog.com"
+            - git config user.name "JFrog-CLI-Plugins-bot"
             - git commit -m "Updated plugins to the latest releases of jfrog-cli-core and jfrog-client-go"
             - git push origin main
